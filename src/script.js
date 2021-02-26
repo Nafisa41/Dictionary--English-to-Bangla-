@@ -1,4 +1,4 @@
-const dictionaryDatabaseLink = 'https://raw.githubusercontent.com/farhanfuad35/lumos/main/data/E2Bdatabase.json';
+const dictionaryDatabaseLink = 'https://raw.githubusercontent.com/Nafisa41/Dictionary--English-to-Bangla-/master/Database/E2Bdatabase.json';
 const radix = 128
 const mod = 100000000003
 const primeForPrimaryHash =  103643        // this is also our table row number.
@@ -105,12 +105,14 @@ class Dictionary{
         arr = new Array(m)
         var a
         var b
+
+        // idx = 2 123 5574 33  m = 9
         while(1)
         {
             cnt++
             arr.fill(-1)
             var flag = true 
-            a = Math.floor(Math.random() * (mod - 1) ) + 1
+            a = Math.floor(Math.random() * (mod - 1) ) + 1 // 1 to p - 1
             b = Math.floor(Math.random() * mod)
             for(var i = 0; i < wordarr.length; i++)
             {
@@ -162,13 +164,28 @@ window.onload = function getDictionary(){
         })   
 }
 // function for searching button onclick
-
+function emptyTextfield()
+{
+    w = document.getElementById('keyword')
+    var display = document.getElementById('display')
+    if(w.value.length == 0) display.innerHTML = ""
+    return
+}
 function search()
 {
-    var w = 'pity'
-    w = w.toLowerCase()
+    var w = document.getElementById('keyword')
+    var display = document.getElementById('display')
+    if(w.value.length == 0) {
+        display.innerHTML = ""
+        return 
+    }
+    w = w.value.toLowerCase()
     var key = dictionary.calculateKeyvalue(w)
     var phash = dictionary.calculateHashvalue(key)
+    if(dictionary.hashtablekeys[phash] == undefined)
+    {
+        alert("Word not found!")
+    }
     var a = dictionary.hashtablekeys[phash][0] 
     var b = dictionary.hashtablekeys[phash][1]
     var m = dictionary.hashtablekeys[phash][2]
@@ -179,9 +196,14 @@ function search()
     hashv = hashv % BigInt(m)
     hashv = Number(hashv)
     var i = dictionary.hashtable[phash][hashv]
-    if((dictionary.words[i].en) == w)
+    if(i >= 0 && (dictionary.words[i].en) == w)
     {
+        display.innerHTML = dictionary.words[i].bn
         console.log(dictionary.words[i].bn)
+    }
+    else 
+    {
+        alert("word not found!")
     }
 
 }

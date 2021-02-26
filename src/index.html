@@ -1,8 +1,23 @@
 <html>
     <head>
+        <link href="style.css" rel = "stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet">
         <title>Dictionary</title>
     </head>
     <body>
+        <div class = "headingcontainer">
+            <p>English to Bangla Dictionary</p>   
+        </div>
+        <div class = "textcontainer">
+            <input type = "text" class = "input" id = "keyword" onkeyup = "emptyTextfield()" size = "50" placeholder="Type a word..."><br><br>
+        </div>
+        <div class = "buttoncontainer">
+            <button class = "button" onclick="search()">Search</button>
+        </div>
+        <div class = "displaycontainer">
+            <p id = "display"> </p>
+        </div>
         <script src="script.js"></script>
     </body>
 </html>

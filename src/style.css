@@ -1,0 +1,46 @@
+body {
+    background-color: rgb(0, 25, 40);
+}
+.headingcontainer, .textcontainer, .buttoncontainer, .displaycontainer{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: auto; 
+}
+.headingcontainer{
+    color: rgb(76, 165, 165);
+    font-size: 40px;
+    font-weight: lighter;
+    font-family: 'Inconsolata', monospace;
+}
+.button {
+    background-color:  rgb(0, 25, 40);
+    border-style: double;
+    border-color:  rgb(76, 165, 165);
+    color: rgb(76, 165, 165);
+    height: 50px;
+    width: 150px;
+    text-align: center;
+    font-size: large;
+    font-family: 'Inconsolata', monospace;
+    
+}
+.input{
+    background-color: rgb(0,25,40);
+    border-style: double;
+    border-color: rgb(0,255, 255);
+    height: 70px;
+    width: 500px;
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Inconsolata', monospace;
+    color: rgb(0,255, 255);
+    
+}
+#display {
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Inconsolata', monospace;
+    color: rgb(76, 165, 165);
+}
