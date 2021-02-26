@@ -1,8 +1,8 @@
 const dictionaryDatabaseLink = 'https://raw.githubusercontent.com/farhanfuad35/lumos/main/data/E2Bdatabase.json';
 const radix = 128
-const mod = 33489857205
+const mod = 100000000003
 const primeForPrimaryHash =  103643        // this is also our table row number.
-var indexglobe
+var callglobe = 0
 class Dictionary{
     words
     wordCount 
@@ -24,10 +24,8 @@ class Dictionary{
     {
         var value = 0
         var exp = 1
-        for(var i = element.length - 1; i >= 0; i--)
-        {
-            value = ((value % mod) + (element.charCodeAt(i) * exp) % mod) % mod
-            exp = (exp * radix) % mod
+        for(var i = 0; i < element.length; i++){
+            value = ((value * radix) % mod + element.charCodeAt(i)) % mod;
         }
         return value
     }
@@ -40,16 +38,18 @@ class Dictionary{
         hashv = Number(hashv)
         return hashv
     }
-    wordExistsTwice(arr, wordInsert)
-    {
-        for(var i = 0; i < arr.length; i++)
-        {
-            if(this.words[arr[i]].en == wordInsert)
-            {
-                return true
+    noDuplicate(array, word){
+        // Given a word and an array this function checks if the word already
+        // exists in the array
+
+        var unique = true;
+        for(var i=0; i<array.length; i++){
+            if(this.words[array[i]].en == word){
+                unique = false;
+                break;
             }
         }
-        return false
+        return unique;
     }
     creatingPrimaryHashTable()
     {
@@ -60,14 +60,9 @@ class Dictionary{
         this.primaryHashB = b
         for(var i = 0; i < this.words.length; i++)
         {
-            if(this.words[i].en == 'bye') indexglobe = i
             var key = this.calculateKeyvalue(this.words[i].en)
-            var hashvalue = this.calculateHashvalue(key,primeForPrimaryHash)
-            if(this.words[i].en == 'bye') console.log('primary' + hashvalue)
-            if(this.wordExistsTwice(this.hashtable[hashvalue], this.words[i].en) == false)
-            {
-                this.hashtable[hashvalue].push(i)
-            }
+            var hashvalue = this.calculateHashvalue(key)
+            this.hashtable[hashvalue].push(i)
         }
 
         // maximum collision in one slot
@@ -108,32 +103,25 @@ class Dictionary{
         var m = wordarr.length * wordarr.length
         var arr
         arr = new Array(m)
+        var a
+        var b
         while(1)
         {
             cnt++
-            if(cnt > 20) 
-            {
-                for(var l = 0; l < wordarr.length; l++)
-                {
-                    console.log(this.words[wordarr[i]].en)
-                }
-                throw new Error 
-            }
             arr.fill(-1)
             var flag = true 
-            var a
-            var b
             a = Math.floor(Math.random() * (mod - 1) ) + 1
             b = Math.floor(Math.random() * mod)
-            console.log('here1')
             for(var i = 0; i < wordarr.length; i++)
             {
                 var key = this.calculateKeyvalue(this.words[wordarr[i]].en)
-                a = BigInt(a)
-                b = BigInt(b)
-                var hashv = (a * BigInt(key) + b)
+                var aa = BigInt(a)
+                var bb = BigInt(b)
+                var keyk = BigInt(key)
+                var hashv = ((aa * keyk)%BigInt(mod) + BigInt(bb))% BigInt(mod)
                 hashv = hashv % BigInt(m)
                 hashv = Number(hashv)
+                
                 if(arr[hashv] == -1) arr[hashv] = wordarr[i]
                 else
                 {
@@ -141,6 +129,7 @@ class Dictionary{
                     break
                 }
             }
+
             if(flag == true)
             { 
                 this.hashtablekeys[idx][0] = Number(a)
@@ -149,7 +138,7 @@ class Dictionary{
                 this.hashtable[idx] = arr
                 break
             }
-        } 
+        }
     }
 }
 
@@ -167,8 +156,6 @@ window.onload = function getDictionary(){
         .then(json => {
             dictionary.words = json;
             dictionary.wordCount = Object.keys(dictionary.words).length
-            console.log(dictionary.calculateKeyvalue('false'))
-            console.log(dictionary.calculateKeyvalue(dictionary.words[0].en))
             dictionary.creatingPrimaryHashTable()
             dictionary.creatingSecondaryHashTable()
             search()
@@ -178,28 +165,23 @@ window.onload = function getDictionary(){
 
 function search()
 {
-    var w = 'bye'
+    var w = 'pity'
     w = w.toLowerCase()
     var key = dictionary.calculateKeyvalue(w)
-    console.log('serachkey ' + key)
     var phash = dictionary.calculateHashvalue(key)
     var a = dictionary.hashtablekeys[phash][0] 
     var b = dictionary.hashtablekeys[phash][1]
     var m = dictionary.hashtablekeys[phash][2]
-    a = BigInt(a)
-    b = BigInt(b)
-    var hashv = (a * BigInt(key) + b)
+    var aa = BigInt(a)
+    var bb = BigInt(b)
+    var keyk = BigInt(key)
+    var hashv = ( (aa * keyk)%BigInt(mod) + BigInt(bb))% BigInt(mod)
     hashv = hashv % BigInt(m)
     hashv = Number(hashv)
-    console.log(a + ' ' + b + ' ' + ' ' + m + ' search')
-    console.log('primesearch ' + phash)
-    console.log('seconsearch ' + hashv)
     var i = dictionary.hashtable[phash][hashv]
-    console.log(i)
     if((dictionary.words[i].en) == w)
     {
         console.log(dictionary.words[i].bn)
     }
-
 
 }
