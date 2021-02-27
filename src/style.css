@@ -1,7 +1,7 @@
 body {
     background-color: rgb(0, 25, 40);
 }
-.headingcontainer, .textcontainer, .buttoncontainer, .displaycontainer{
+.headingcontainer, .textcontainer, .buttoncontainer, .displaycontainer, .errorcontainer{
     display: grid;
     align-items: center;
     justify-content: center;
@@ -16,7 +16,8 @@ body {
 }
 .button {
     background-color:  rgb(0, 25, 40);
-    border-style: double;
+    border-style:double;
+    border-radius: 10px;
     border-color:  rgb(76, 165, 165);
     color: rgb(76, 165, 165);
     height: 50px;
@@ -24,12 +25,16 @@ body {
     text-align: center;
     font-size: large;
     font-family: 'Inconsolata', monospace;
+    box-shadow: 0 5px 5px 0 rgba(76, 165, 165, 0.1), 0 5px 5px 0 rgb(76, 165, 165, 0.1);
     
+}
+.button:hover{
+    opacity: 0.5;
 }
 .input{
     background-color: rgb(0,25,40);
     border-style: double;
-    border-color: rgb(0,255, 255);
+    border-color: rgb(76, 165, 165);
     height: 70px;
     width: 500px;
     text-align: center;
@@ -43,4 +48,10 @@ body {
     font-size: 30px;
     font-family: 'Inconsolata', monospace;
     color: rgb(76, 165, 165);
+}
+#error {
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Inconsolata', monospace;
+    color: red;
 }

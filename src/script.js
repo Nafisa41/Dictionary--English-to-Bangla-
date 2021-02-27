@@ -168,27 +168,63 @@ function emptyTextfield()
 {
     w = document.getElementById('keyword')
     var display = document.getElementById('display')
-    if(w.value.length == 0) display.innerHTML = ""
+    var error = document.getElementById('error')
+    if(w.value.length == 0) 
+    {
+        display.innerHTML = ""
+        error.innerHTML = ""
+    }
     return
 }
+function trim(x) {
+    var str = ""
+    var idx_first
+    var idx_last
+    var flag = 0
+    for(var i = 0; i < x.length; i++)
+    {
+        if(x.charCodeAt(i) != 32 && flag == 0)
+        {
+            idx_first = i
+            flag = 1
+        }
+        if(x.charCodeAt(i) != 32 && flag == 1) idx_last = i 
+    }
+    for(var i = idx_first; i <= idx_last; i++)
+    {
+        str = str + x[i]
+    }
+    console.log(str)
+    return str
+}  
 function search()
 {
-    var w = document.getElementById('keyword')
+    var input = document.getElementById('keyword')
+    var w = trim(input.value) 
     var display = document.getElementById('display')
-    if(w.value.length == 0) {
+    var error = document.getElementById('error')
+    if(w.length == 0) {
         display.innerHTML = ""
+        error.innerHTML = ""
         return 
     }
-    w = w.value.toLowerCase()
+    w = w.toLowerCase()
     var key = dictionary.calculateKeyvalue(w)
     var phash = dictionary.calculateHashvalue(key)
-    if(dictionary.hashtablekeys[phash] == undefined)
+    if(dictionary.hashtablekeys[phash].length == 0)
     {
-        alert("Word not found!")
+        error.innerHTML = 'Word Not Found!';
+        display.innerHTML = ""
+        return
     }
     var a = dictionary.hashtablekeys[phash][0] 
     var b = dictionary.hashtablekeys[phash][1]
     var m = dictionary.hashtablekeys[phash][2]
+    if( typeof(a) == undefined || typeof(b) == undefined || typeof(m) == undefined)
+    {
+        error.innerHTML = 'Word Not Found!'
+        display.innerHTML = ""
+    }
     var aa = BigInt(a)
     var bb = BigInt(b)
     var keyk = BigInt(key)
@@ -199,11 +235,13 @@ function search()
     if(i >= 0 && (dictionary.words[i].en) == w)
     {
         display.innerHTML = dictionary.words[i].bn
+        error.innerHTML = ""
         console.log(dictionary.words[i].bn)
     }
     else 
     {
-        alert("word not found!")
+        error.innerHTML = 'Word Not Found!'
+        display.innerHTML = ""
     }
 
 }
